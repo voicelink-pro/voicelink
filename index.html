@@ -2394,6 +2394,11 @@
             const workingDays = getWorkingDaysFromToday(date);
             const maxSlots = getMaxSlotsForWorkingDay(workingDays);
             
+            // If maxSlots is 0, return empty array (no availability)
+            if (maxSlots === 0) {
+                return [];
+            }
+            
             // If no limit or fewer slots available than limit, return all not-booked
             if (maxSlots >= notBookedSlots.length) {
                 return notBookedSlots;
