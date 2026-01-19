@@ -22,10 +22,7 @@
     src="https://www.facebook.com/tr?id=827829083588829&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Meta Pixel Code -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
-<link rel="apple-touch-icon" href="/favicon.png">
-
+    
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2MC99CSM7C"></script>
     <script>
@@ -2267,7 +2264,12 @@
                 const response = await fetch(GOOGLE_SHEETS_URL);
                 const data = await response.json();
                 if (data.success && data.bookedSlots) {
-                    bookedSlots = data.bookedSlots;
+                    // Normalize dates and times from Google Sheets format
+                    bookedSlots = data.bookedSlots.map(slot => ({
+                        date: normalizeDate(slot.date),
+                        time: normalizeTime(slot.time)
+                    }));
+                    console.log('Loaded booked slots:', bookedSlots);
                     renderCalendar();
                 }
             } catch (error) {
@@ -2275,24 +2277,130 @@
             }
         }
         
-        // Check if a specific slot is booked
-        function isSlotBooked(dateStr, time) {
-            return bookedSlots.some(slot => slot.date === dateStr && slot.time === time);
+        // Normalize date from various formats to YYYY-MM-DD
+        function normalizeDate(dateValue) {
+            if (!dateValue) return '';
+            // If already in YYYY-MM-DD format
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
+                return dateValue;
+            }
+            // If ISO format (e.g., "2026-01-19T23:00:00.000Z")
+            if (dateValue.includes('T')) {
+                const d = new Date(dateValue);
+                // Adjust for timezone - Google Sheets stores dates at midnight UTC
+                // which can appear as previous day in some timezones
+                d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            return dateValue;
         }
         
-        // Get available slots for a specific date
+        // Normalize time from various formats to HH:MM
+        function normalizeTime(timeValue) {
+            if (!timeValue) return '';
+            // If already in HH:MM format
+            if (/^\d{2}:\d{2}$/.test(timeValue)) {
+                return timeValue;
+            }
+            // If ISO format with weird 1899 date (Google Sheets time format)
+            // Google Sheets stores time as a date with time in local timezone
+            if (timeValue.includes('T') || timeValue.includes('1899')) {
+                const d = new Date(timeValue);
+                // Use local time (as it was stored in Polish timezone)
+                const hours = String(d.getHours()).padStart(2, '0');
+                const minutes = String(d.getMinutes()).padStart(2, '0');
+                return `${hours}:${minutes}`;
+            }
+            return timeValue;
+        }
+        
+        // Check if a specific slot is booked
+        function isSlotBooked(dateStr, time) {
+            const isBooked = bookedSlots.some(slot => slot.date === dateStr && slot.time === time);
+            return isBooked;
+        }
+        
+        // Get available slots for a specific date (not booked in Google Sheets)
         function getAvailableSlotsForDate(dateStr) {
             return allTimeSlots.filter(time => !isSlotBooked(dateStr, time));
         }
         
-        // Get available slots based on days from today (with minimum delay)
-        function getAvailableSlots(date) {
-            const daysFromToday = getDaysFromToday(date);
-            if (daysFromToday < 1) {
-                return []; // Today and past are not available
+        // Count working days from today to target date (excluding weekends)
+        // Day 1 = today (if it's a working day)
+        function getWorkingDaysFromToday(targetDate) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const target = new Date(targetDate);
+            target.setHours(0, 0, 0, 0);
+            
+            if (target <= today) return 0;
+            
+            let workingDays = 0;
+            let current = new Date(today);
+            
+            while (current < target) {
+                current.setDate(current.getDate() + 1);
+                const dayOfWeek = current.getDay();
+                // Skip weekends (0 = Sunday, 6 = Saturday)
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    workingDays++;
+                }
             }
+            
+            return workingDays;
+        }
+        
+        // Get max allowed slots based on working days from today
+        function getMaxSlotsForWorkingDay(workingDays) {
+            // Working days 1-3: 0 available slots
+            if (workingDays <= 3) return 0;
+            // Working day 4: 2 slots
+            if (workingDays === 4) return 2;
+            // Working day 5: 2 slots
+            if (workingDays === 5) return 2;
+            // Working day 6: 3 slots
+            if (workingDays === 6) return 3;
+            // Working day 7: 4 slots
+            if (workingDays === 7) return 4;
+            // Working day 8+: all slots available
+            return 99;
+        }
+        
+        // Get available slots based on working days from today
+        function getAvailableSlots(date) {
+            const target = new Date(date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            target.setHours(0, 0, 0, 0);
+            
+            // Past days are not available
+            if (target <= today) {
+                return [];
+            }
+            
+            // Weekend days are not available
+            const dayOfWeek = target.getDay();
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                return [];
+            }
+            
             const dateStr = formatDateForSheet(date);
-            return getAvailableSlotsForDate(dateStr);
+            const notBookedSlots = getAvailableSlotsForDate(dateStr);
+            
+            // Get working days from today
+            const workingDays = getWorkingDaysFromToday(date);
+            const maxSlots = getMaxSlotsForWorkingDay(workingDays);
+            
+            // If no limit or fewer slots available than limit, return all not-booked
+            if (maxSlots >= notBookedSlots.length) {
+                return notBookedSlots;
+            }
+            
+            // Return only the last N slots (later hours seem more "limited")
+            return notBookedSlots.slice(-maxSlots);
         }
         
         // Format date as YYYY-MM-DD for Google Sheets
