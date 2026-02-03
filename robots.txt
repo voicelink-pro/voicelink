@@ -1,0 +1,11 @@
+# Robots.txt for voicelink.pl
+# Pozwala wszystkim botom na indeksowanie strony
+
+User-agent: *
+Allow: /
+
+# Blokuj dostęp do folderów technicznych
+Disallow: /FORMULARZ/
+
+# Sitemap
+Sitemap: https://voicelink.pl/sitemap.xml
