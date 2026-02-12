@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezerwacje Online - Automatyczne Umawianie Wizyt AI | VoiceLink</title>
+    <meta name="description" content="Automatyczne umawianie wizyt telefonicznie i online. Redukcja no-show dzięki przypomnieniom SMS. Integracja z Google Calendar, Booksy i systemami medycznymi.">
+    <meta name="keywords" content="rezerwacje online, umawianie wizyt AI, system rezerwacji, no-show redukcja, przypomnienia wizyt, booksy integracja, kalendarz lekarski">
+    <link rel="canonical" href="https://voicelink.pl/rezerwacje-online.html">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <meta name="theme-color" content="#9257FD">
+    <meta property="og:title" content="Rezerwacje Online - Automatyczne Umawianie Wizyt | VoiceLink">
+    <meta property="og:description" content="AI umawia wizyty przez telefon w czasie rzeczywistym. Przypomnienia SMS, redukcja no-show, integracja z Twoim kalendarzem.">
+    <meta property="og:type" content="website">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { 'inter': ['Inter', 'system-ui', 'sans-serif'], 'grotesk': ['Space Grotesk', 'sans-serif'] }, colors: { accent: { purple: '#9257FD', pink: '#fa3cea', cyan: '#3AADFF' } } } }
+        }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0f; color: #e5e5e5; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        .mesh-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(ellipse 80% 50% at 20% 30%, rgba(146,87,253,0.15) 0%, transparent 50%), radial-gradient(ellipse 60% 40% at 80% 70%, rgba(250,60,234,0.1) 0%, transparent 50%), radial-gradient(ellipse 50% 30% at 50% 50%, rgba(58,173,255,0.08) 0%, transparent 50%), linear-gradient(135deg, #0a0a0f 0%, #0f0f18 50%, #0a0a0f 100%); }
+        .gradient-text { background: linear-gradient(135deg, #67e8f9 0%, #a78bfa 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; }
+        .gradient-text-purple { background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; }
+        .card-elegant { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 10px 15px -3px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05); transition: all 0.4s cubic-bezier(0.4,0,0.2,1); }
+        .card-elegant:hover { background: rgba(255,255,255,0.06); transform: translateY(-4px); border-color: rgba(146,87,253,0.3); box-shadow: 0 20px 40px -10px rgba(146,87,253,0.15); }
+        .btn-primary { background: linear-gradient(135deg, #9257FD 0%, #7c3aed 100%); color: white; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(146,87,253,0.3); }
+        .btn-primary:hover { box-shadow: 0 10px 40px -5px rgba(146,87,253,0.5); transform: translateY(-2px); }
+        .nav-scrolled { background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); box-shadow: 0 1px 0 rgba(255,255,255,0.05); }
+        .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(146,87,253,0.3), transparent); }
+        .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; pointer-events: none; }
+        .blob-purple { background: rgba(146,87,253,0.3); }
+        .blob-pink { background: rgba(250,60,234,0.25); }
+        .blob-cyan { background: rgba(58,173,255,0.25); }
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(146,87,253,0.4); border-radius: 2px; }
+        .serif-italic { font-family: 'Space Grotesk', sans-serif; font-weight: 500; letter-spacing: -0.03em; }
+        .text-glow { text-shadow: 0 0 40px rgba(146,87,253,0.3); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .feature-glow { position: relative; }
+        .feature-glow::before { content: ''; position: absolute; inset: -1px; border-radius: inherit; background: linear-gradient(135deg, rgba(146,87,253,0.3), rgba(58,173,255,0.2)); opacity: 0; transition: opacity 0.4s; z-index: -1; }
+        .feature-glow:hover::before { opacity: 1; }
+        .research-callout { border-left: 3px solid #9257FD; background: linear-gradient(135deg, rgba(146,87,253,0.08) 0%, rgba(58,173,255,0.04) 100%); }
+        .nav-dropdown { position: relative; }
+        .nav-dropdown-trigger { cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .nav-dropdown-trigger .dropdown-arrow { transition: transform 0.25s ease; }
+        .nav-dropdown:hover .dropdown-arrow { transform: rotate(180deg); }
+        .nav-dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(8px); min-width: 240px; background: rgba(15,15,25,0.97); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 8px; opacity: 0; visibility: hidden; transition: all 0.25s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 20px 50px -12px rgba(0,0,0,0.6); z-index: 100; }
+        .nav-dropdown:hover .nav-dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .nav-dropdown-menu a { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; color: #a1a1aa; font-size: 0.8125rem; font-weight: 450; transition: all 0.2s ease; text-decoration: none; }
+        .nav-dropdown-menu a:hover { background: rgba(146,87,253,0.1); color: #fff; }
+        .nav-dropdown-menu a .dropdown-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(146,87,253,0.1); border: 1px solid rgba(146,87,253,0.15); flex-shrink: 0; }
+        .bar-fill { width: 0; transition: width 1.5s cubic-bezier(0.4,0,0.2,1); }
+        .bar-fill.animate { width: var(--fill); }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .float-badge { animation: float 4s ease-in-out infinite; }
+        .donut-chart { width: 180px; height: 180px; border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; }
+        .donut-chart::before { content: ''; position: absolute; inset: 22px; border-radius: 50%; background: #0a0a0f; z-index: 1; }
+        .donut-chart .donut-label { position: relative; z-index: 2; text-align: center; }
+        @keyframes pulseRing { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+        .pulse-ring { animation: pulseRing 2s ease-out infinite; }
+
+        /* Calendar mock */
+        .cal-day { transition: all 0.3s ease; }
+        .cal-day:hover { background: rgba(146,87,253,0.2); }
+        .cal-day.booked { background: rgba(146,87,253,0.15); border-color: rgba(146,87,253,0.3); }
+        .cal-day.available { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.3); }
+        .cal-day.today { box-shadow: 0 0 0 2px #9257FD; }
+
+        /* Timeline */
+        .timeline-line { position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #9257FD, #3AADFF, transparent); }
+        .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: #9257FD; position: absolute; left: 11px; top: 8px; box-shadow: 0 0 12px rgba(146,87,253,0.5); }
+    </style>
+</head>
+<body class="font-inter">
+    <div class="mesh-bg"></div>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0"><a href="index.html"><img src="logo.png" alt="VoiceLink" class="h-16 sm:h-20 w-auto"></a></div>
+                <div class="hidden lg:flex items-center space-x-1 xl:space-x-2">
+                    <a href="index.html" class="text-gray-400 hover:text-white transition-colors text-sm font-medium px-3 py-2">Strona główna</a>
+                    <div class="nav-dropdown">
+                        <button class="nav-dropdown-trigger text-white text-sm font-medium px-3 py-2 rounded-lg">Usługi <svg class="w-3.5 h-3.5 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                        <div class="nav-dropdown-menu">
+                            <a href="sekretarka-ai.html"><span class="dropdown-icon"><svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg></span><div><div class="text-white text-sm font-medium">Sekretarka AI</div><div class="text-xs text-gray-500">Wirtualna recepcjonistka 24/7</div></div></a>
+                            <a href="automatyzacja-rozmow.html"><span class="dropdown-icon"><svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></span><div><div class="text-white text-sm font-medium">Automatyzacja rozmów</div><div class="text-xs text-gray-500">Inteligentna obsługa połączeń</div></div></a>
+                            <a href="rezerwacje-online.html"><span class="dropdown-icon"><svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></span><div><div class="text-white text-sm font-medium">Rezerwacje online</div><div class="text-xs text-gray-500">Automatyczne umawianie wizyt</div></div></a>
+                            <a href="obsluga-klienta-24-7.html"><span class="dropdown-icon"><svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span><div><div class="text-white text-sm font-medium">Obsługa klienta 24/7</div><div class="text-xs text-gray-500">Bez przerw i dni wolnych</div></div></a>
+                        </div>
+                    </div>
+                    <div class="nav-dropdown">
+                        <button class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors text-sm font-medium px-3 py-2 rounded-lg">Dla placówek <svg class="w-3.5 h-3.5 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                        <div class="nav-dropdown-menu">
+                            <a href="przychodnie-kliniki.html"><span class="dropdown-icon"><svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></span><div><div class="text-white text-sm font-medium">Przychodnie i kliniki</div><div class="text-xs text-gray-500">POZ, specjalistyczne</div></div></a>
+                            <a href="gabinety-stomatologiczne.html"><span class="dropdown-icon"><svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span><div><div class="text-white text-sm font-medium">Gabinety stomatologiczne</div><div class="text-xs text-gray-500">Dentyści, ortodonci</div></div></a>
+                            <a href="centra-medyczne.html"><span class="dropdown-icon"><svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></span><div><div class="text-white text-sm font-medium">Centra medyczne</div><div class="text-xs text-gray-500">Duże placówki, NZOZ</div></div></a>
+                        </div>
+                    </div>
+                    <div class="nav-dropdown"><button class="nav-dropdown-trigger text-gray-400 hover:text-white text-sm font-medium px-3 py-2 rounded-lg">Cennik <svg class="w-3.5 h-3.5 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button><div class="nav-dropdown-menu"><a href="kalkulator-oszczednosci.html"><span class="dropdown-icon"><svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></span><div><div class="text-white text-sm font-medium">Kalkulator oszczędności</div><div class="text-xs text-gray-500">Oblicz ile zaoszczędzisz</div></div></a><a href="plany-cenowe.html"><span class="dropdown-icon"><svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span><div><div class="text-white text-sm font-medium">Plany cenowe</div><div class="text-xs text-gray-500">Pakiety dla placówek</div></div></a></div></div>
+                    <a href="o-nas.html" class="text-gray-400 hover:text-white transition-colors text-sm font-medium px-3 py-2">O nas</a>
+                    <a href="index.html#faq" class="text-gray-400 hover:text-white transition-colors text-sm font-medium px-3 py-2">FAQ</a>
+                    <a href="index.html#contact" class="text-gray-400 hover:text-white transition-colors text-sm font-medium px-3 py-2">Kontakt</a>
+                </div>
+                <div class="hidden lg:flex items-center"><a href="index.html#contact" class="btn-primary px-4 py-2 rounded-full text-white text-xs font-medium">Poproś o demo</a></div>
+                <button class="lg:hidden p-2 rounded-xl bg-white/5 border border-white/10" onclick="toggleMobileMenu()">
+                    <svg id="hamburger-icon" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg id="close-icon" class="w-6 h-6 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="lg:hidden hidden">
+                <div class="px-4 pb-6 pt-2 space-y-1 bg-[#0a0a0f]/95 backdrop-blur-xl border-t border-white/5">
+                    <a href="index.html" class="block px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 text-sm font-medium">Strona główna</a>
+                    <a href="sekretarka-ai.html" class="block px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 text-sm font-medium">Sekretarka AI</a>
+                    <a href="automatyzacja-rozmow.html" class="block px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 text-sm font-medium">Automatyzacja rozmów</a>
+                    <a href="rezerwacje-online.html" class="block px-4 py-3 rounded-xl text-white bg-white/5 text-sm font-medium">Rezerwacje online</a>
+                    <a href="obsluga-klienta-24-7.html" class="block px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 text-sm font-medium">Obsługa 24/7</a>
+                    <a href="kalkulator-oszczednosci.html" class="block px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 text-sm font-medium">Kalkulator oszczędności</a><a href="plany-cenowe.html" class="block px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 text-sm font-medium">Plany cenowe</a>
+                    <a href="o-nas.html" class="block px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 text-sm font-medium">O nas</a>
+                    <a href="index.html#contact" class="block px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 text-sm font-medium">Kontakt</a>
+                    <div class="pt-4 px-2"><a href="index.html#contact" class="w-full btn-primary py-3 rounded-xl text-white text-sm font-medium flex items-center justify-center gap-2">Poproś o demo</a></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="pt-32 pb-20 relative overflow-hidden">
+        <div class="blob blob-pink w-96 h-96 -top-48 -right-48"></div>
+        <div class="blob blob-cyan w-72 h-72 top-1/3 -left-36"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-4xl">
+                <div class="inline-flex items-center rounded-full px-3.5 py-1.5 mb-6 border border-emerald-500/20" style="background: rgba(16,185,129,0.08);">
+                    <svg class="w-4 h-4 text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span class="text-xs text-emerald-300 font-medium">Usługa VoiceLink</span>
+                </div>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold mb-6 leading-[1.05] text-glow" style="letter-spacing: -0.04em;">
+                    <span class="text-white">Rezerwacje </span><span class="serif-italic gradient-text">online</span>
+                    <br><span class="text-white/70 text-3xl sm:text-4xl md:text-5xl font-light">Automatyczne umawianie wizyt</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-400 max-w-2xl mb-8 leading-relaxed">
+                    AI umawia wizyty <span class="text-white font-medium">przez telefon w czasie rzeczywistym</span>. Sprawdza dostępność, zapisuje, wysyła potwierdzenie. Redukuje no-show dzięki inteligentnym przypomnieniom.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="index.html#contact" class="btn-primary px-6 py-3 rounded-full font-semibold text-sm inline-flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        Poproś o demo
+                    </a>
+                    <a href="#co-obejmuje" class="px-6 py-3 rounded-full font-semibold text-sm text-gray-300 border border-white/15 hover:bg-white/5 transition-all inline-flex items-center gap-2">
+                        Jak to działa?
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NO-SHOW PROBLEM -->
+    <section class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 items-center reveal">
+                <div class="text-center">
+                    <div class="donut-chart mx-auto mb-4" style="background: conic-gradient(#ef4444 0% 23%, rgba(255,255,255,0.08) 23% 100%);">
+                        <div class="donut-label">
+                            <div class="text-3xl font-bold text-red-400">23%</div>
+                            <div class="text-xs text-gray-500">no-show</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm">Średni wskaźnik no-show<br><span class="text-white">bez przypomnień</span></p>
+                </div>
+
+                <div class="flex flex-col items-center gap-4">
+                    <div class="research-callout rounded-2xl p-6 max-w-sm">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <div>
+                                <p class="text-xs text-gray-300 font-medium mb-1">Systematic review — przypomnienia</p>
+                                <p class="text-xs text-gray-400 leading-relaxed">Przegląd badań potwierdza: automatyczne przypomnienia SMS i telefoniczne <strong class="text-white">znacząco zmniejszają</strong> wskaźnik nieobecności na wizytach.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="donut-chart mx-auto mb-4" style="background: conic-gradient(#10b981 0% 95%, rgba(255,255,255,0.08) 95% 100%);">
+                        <div class="donut-label">
+                            <div class="text-3xl font-bold text-emerald-400">5%</div>
+                            <div class="text-xs text-gray-500">no-show</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm">Z automatycznymi<br><span class="text-emerald-400">przypomnieniami VoiceLink</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- CO OBEJMUJE REZERWACJA -->
+    <section id="co-obejmuje" class="py-24 relative">
+        <div class="blob blob-purple w-64 h-64 top-20 right-10 opacity-20"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="text-emerald-400 font-medium text-xs uppercase" style="letter-spacing: 0.2em;">Funkcje</span>
+                <h2 class="text-3xl md:text-5xl font-semibold mt-4 mb-6" style="letter-spacing: -0.03em;">
+                    <span class="text-white">Co obejmuje </span><span class="serif-italic gradient-text">rezerwacja?</span>
+                </h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+                <div class="card-elegant feature-glow rounded-2xl p-7 text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 flex items-center justify-center mx-auto mb-5">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </div>
+                    <h3 class="text-white font-semibold mb-2">Sprawdzenie terminów</h3>
+                    <p class="text-gray-400 text-sm">AI sprawdza dostępność lekarza w czasie rzeczywistym i proponuje najbliższe wolne terminy.</p>
+                </div>
+                <div class="card-elegant feature-glow rounded-2xl p-7 text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mx-auto mb-5">
+                        <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                    </div>
+                    <h3 class="text-white font-semibold mb-2">Zapis na wizytę</h3>
+                    <p class="text-gray-400 text-sm">Automatyczny zapis do kalendarza z pełnymi danymi pacjenta i rodzajem wizyty.</p>
+                </div>
+                <div class="card-elegant feature-glow rounded-2xl p-7 text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center mx-auto mb-5">
+                        <svg class="w-7 h-7 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    </div>
+                    <h3 class="text-white font-semibold mb-2">Zmiana terminu</h3>
+                    <p class="text-gray-400 text-sm">Pacjent może zmienić termin wizyty telefonicznie — AI przełoży wizytę automatycznie.</p>
+                </div>
+                <div class="card-elegant feature-glow rounded-2xl p-7 text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mx-auto mb-5">
+                        <svg class="w-7 h-7 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    </div>
+                    <h3 class="text-white font-semibold mb-2">Odwołanie wizyty</h3>
+                    <p class="text-gray-400 text-sm">Odwołanie z zapisem powodu. Termin wraca do puli — inny pacjent może go zająć.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- POTWIERDZENIA I PRZYPOMNIENIA -->
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <span class="text-cyan-400 font-medium text-xs uppercase" style="letter-spacing: 0.2em;">Przypomnienia</span>
+                    <h2 class="text-3xl md:text-4xl font-semibold mt-4 mb-6" style="letter-spacing: -0.03em;">
+                        <span class="text-white">Potwierdzenia i </span><br><span class="serif-italic gradient-text">inteligentne przypomnienia</span>
+                    </h2>
+                    <p class="text-gray-400 leading-relaxed mb-8">Automatyczne przypomnienia SMS, e-mail i telefoniczne — z możliwością potwierdzenia, przełożenia lub odwołania jednym kliknięciem.</p>
+                    
+                    <!-- Timeline -->
+                    <div class="space-y-8 relative pl-10">
+                        <div class="timeline-line"></div>
+                        <div class="relative">
+                            <div class="timeline-dot"></div>
+                            <div class="ml-4">
+                                <div class="text-white font-medium text-sm">Natychmiast po rezerwacji</div>
+                                <p class="text-gray-400 text-sm">SMS + email z potwierdzeniem terminu, adresem i instrukcjami przygotowania.</p>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="timeline-dot" style="background: #3AADFF;"></div>
+                            <div class="ml-4">
+                                <div class="text-white font-medium text-sm">48h przed wizytą</div>
+                                <p class="text-gray-400 text-sm">Przypomnienie SMS z linkiem do potwierdzenia, przełożenia lub odwołania.</p>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="timeline-dot" style="background: #10b981;"></div>
+                            <div class="ml-4">
+                                <div class="text-white font-medium text-sm">24h przed wizytą</div>
+                                <p class="text-gray-400 text-sm">Prośba o reconfirm. Brak potwierdzenia = automatyczny alert do recepcji.</p>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="timeline-dot" style="background: #f59e0b;"></div>
+                            <div class="ml-4">
+                                <div class="text-white font-medium text-sm">2h przed wizytą</div>
+                                <p class="text-gray-400 text-sm">Ostatnie przypomnienie z adresem placówki i informacjami o parkingu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mock SMS -->
+                <div class="reveal reveal-delay-2 flex justify-center">
+                    <div class="w-72 float-badge">
+                        <div class="card-elegant rounded-3xl p-6">
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="text-white text-sm font-medium">VoiceLink SMS</div>
+                                    <div class="text-gray-500 text-xs">Teraz</div>
+                                </div>
+                            </div>
+                            <div class="bg-white/5 rounded-2xl p-4 text-sm text-gray-300 leading-relaxed">
+                                <p>Przypomnienie: Wizyta u <strong class="text-white">dr. Kowalski</strong> jutro o <strong class="text-white">10:30</strong>.</p>
+                                <p class="mt-2 text-xs text-gray-500">Klinika ul. Medyczna 15, Warszawa</p>
+                                <div class="mt-3 flex gap-2">
+                                    <div class="px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/20 text-emerald-400 text-xs font-medium">Potwierdzam</div>
+                                    <div class="px-3 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/20 text-amber-400 text-xs font-medium">Przełóż</div>
+                                    <div class="px-3 py-1.5 rounded-full bg-red-500/15 border border-red-500/20 text-red-400 text-xs font-medium">Odwołaj</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- REGUŁY KALENDARZA -->
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="text-purple-400 font-medium text-xs uppercase" style="letter-spacing: 0.2em;">Konfiguracja</span>
+                <h2 class="text-3xl md:text-5xl font-semibold mt-4 mb-6" style="letter-spacing: -0.03em;">
+                    <span class="text-white">Elastyczne reguły </span><span class="serif-italic gradient-text">kalendarza</span>
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">Pełna kontrola nad tym, jak AI zarządza terminami. Ustawiasz reguły raz — AI stosuje je przy każdej rezerwacji.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
+                <div class="card-elegant feature-glow rounded-2xl p-7">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/15 border border-purple-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Bufory czasowe</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Ustaw przerwy między wizytami — 5, 10 lub 15 minut na przygotowanie gabinetu.</p>
+                </div>
+                <div class="card-elegant feature-glow rounded-2xl p-7">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/15 border border-cyan-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Typy usług</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Różne długości wizyt zależnie od usługi: konsultacja 20 min, badanie 45 min, zabieg 60 min.</p>
+                </div>
+                <div class="card-elegant feature-glow rounded-2xl p-7">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Wielu pracowników</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Oddzielne kalendarze dla każdego specjalisty. AI kieruje pacjenta do właściwej osoby.</p>
+                </div>
+                <div class="card-elegant feature-glow rounded-2xl p-7">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Wiele lokalizacji</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Obsługa wielu filii. AI pyta o preferowaną lokalizację i sprawdza dostępność w danym oddziale.</p>
+                </div>
+                <div class="card-elegant feature-glow rounded-2xl p-7">
+                    <div class="w-12 h-12 rounded-xl bg-pink-500/15 border border-pink-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Polityka no-show</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Opcjonalne zaliczki, potwierdzenia, limity rezerwacji dla powtarzających się no-show.</p>
+                </div>
+                <div class="card-elegant feature-glow rounded-2xl p-7">
+                    <div class="w-12 h-12 rounded-xl bg-violet-500/15 border border-violet-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Konfigurowalne reguły</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Ustawiasz minimalny czas rezerwacji, blokady dat, urlopy, dni świąteczne.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- INTEGRACJE -->
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <span class="text-pink-400 font-medium text-xs uppercase" style="letter-spacing: 0.2em;">Integracje</span>
+                    <h2 class="text-3xl md:text-4xl font-semibold mt-4 mb-6" style="letter-spacing: -0.03em;">
+                        <span class="text-white">Łączy się z systemem, </span><br><span class="serif-italic gradient-text">którego już używasz</span>
+                    </h2>
+                    <p class="text-gray-400 leading-relaxed mb-8">VoiceLink integruje się z popularnymi systemami kalendarzy i rezerwacji. Zero ręcznej synchronizacji.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3"><svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-gray-300 text-sm">Google Calendar — dwukierunkowa synchronizacja</span></div>
+                        <div class="flex items-center gap-3"><svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-gray-300 text-sm">Booksy — pełna integracja z istniejącymi rezerwacjami</span></div>
+                        <div class="flex items-center gap-3"><svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-gray-300 text-sm">Calendly — automatyczna dostępność</span></div>
+                        <div class="flex items-center gap-3"><svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-gray-300 text-sm">CRM / EHR — dane pacjenta trafiają automatycznie</span></div>
+                        <div class="flex items-center gap-3"><svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-gray-300 text-sm">Własny system — custom API / webhooks</span></div>
+                    </div>
+                </div>
+
+                <!-- Calendar Mock -->
+                <div class="reveal reveal-delay-2">
+                    <div class="card-elegant rounded-3xl p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h4 class="text-white font-semibold text-sm">Luty 2026</h4>
+                            <div class="flex gap-1">
+                                <div class="w-6 h-6 rounded bg-white/5 flex items-center justify-center"><svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></div>
+                                <div class="w-6 h-6 rounded bg-white/5 flex items-center justify-center"><svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-7 gap-1 text-center text-xs text-gray-500 mb-2">
+                            <span>Pn</span><span>Wt</span><span>Śr</span><span>Cz</span><span>Pt</span><span>Sb</span><span>Nd</span>
+                        </div>
+                        <div class="grid grid-cols-7 gap-1">
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-600">26</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-600">27</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-600">28</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-600">29</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-600">30</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-600">31</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-500">1</div>
+                            <div class="cal-day booked p-2 rounded-lg text-center text-xs text-purple-300 border border-transparent">2</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">3</div>
+                            <div class="cal-day booked p-2 rounded-lg text-center text-xs text-purple-300 border border-transparent">4</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">5</div>
+                            <div class="cal-day booked p-2 rounded-lg text-center text-xs text-purple-300 border border-transparent">6</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-500">7</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-500">8</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">9</div>
+                            <div class="cal-day booked p-2 rounded-lg text-center text-xs text-purple-300 border border-transparent">10</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">11</div>
+                            <div class="cal-day today p-2 rounded-lg text-center text-xs text-white font-bold border border-transparent">12</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">13</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-500">14</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-500">15</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">16</div>
+                            <div class="cal-day booked p-2 rounded-lg text-center text-xs text-purple-300 border border-transparent">17</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">18</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">19</div>
+                            <div class="cal-day booked p-2 rounded-lg text-center text-xs text-purple-300 border border-transparent">20</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-500">21</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-500">22</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">23</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">24</div>
+                            <div class="cal-day booked p-2 rounded-lg text-center text-xs text-purple-300 border border-transparent">25</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">26</div>
+                            <div class="cal-day available p-2 rounded-lg text-center text-xs text-emerald-300 border border-transparent">27</div>
+                            <div class="cal-day p-2 rounded-lg text-center text-xs text-gray-500">28</div>
+                        </div>
+                        <div class="flex items-center gap-4 mt-5 text-xs">
+                            <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-emerald-500/50"></div><span class="text-gray-400">Wolne</span></div>
+                            <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-purple-500/50"></div><span class="text-gray-400">Zajęte</span></div>
+                            <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-sm" style="box-shadow: 0 0 0 1.5px #9257FD;"></div><span class="text-gray-400">Dzisiaj</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- STATYSTYKI -->
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="text-emerald-400 font-medium text-xs uppercase" style="letter-spacing: 0.2em;">Wyniki</span>
+                <h2 class="text-3xl md:text-5xl font-semibold mt-4 mb-6" style="letter-spacing: -0.03em;">
+                    <span class="text-white">Mierzalne korzyści </span><span class="serif-italic gradient-text">dla Twojej placówki</span>
+                </h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+                <div class="card-elegant rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-emerald-400 mb-2">-78%</div>
+                    <div class="text-gray-400 text-sm">Redukcja no-show</div>
+                    <div class="h-2 rounded-full bg-white/5 mt-4 overflow-hidden"><div class="bar-fill h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400" style="--fill: 78%"></div></div>
+                </div>
+                <div class="card-elegant rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-purple-400 mb-2">3x</div>
+                    <div class="text-gray-400 text-sm">Więcej rezerwacji na godzinę</div>
+                    <div class="h-2 rounded-full bg-white/5 mt-4 overflow-hidden"><div class="bar-fill h-full rounded-full bg-gradient-to-r from-purple-500 to-purple-400" style="--fill: 90%"></div></div>
+                </div>
+                <div class="card-elegant rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-cyan-400 mb-2">0 min</div>
+                    <div class="text-gray-400 text-sm">Czekania na recepcji</div>
+                    <div class="h-2 rounded-full bg-white/5 mt-4 overflow-hidden"><div class="bar-fill h-full rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400" style="--fill: 100%"></div></div>
+                </div>
+                <div class="card-elegant rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-amber-400 mb-2">24/7</div>
+                    <div class="text-gray-400 text-sm">Rezerwacje bez przerw</div>
+                    <div class="h-2 rounded-full bg-white/5 mt-4 overflow-hidden"><div class="bar-fill h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400" style="--fill: 100%"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- CTA -->
+    <section class="py-24 relative">
+        <div class="blob blob-purple w-80 h-80 top-0 left-1/4 opacity-30"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <h2 class="text-3xl md:text-5xl font-semibold mb-6" style="letter-spacing: -0.03em;">
+                <span class="text-white">Koniec z pustymi </span><span class="serif-italic gradient-text">terminami</span>
+            </h2>
+            <p class="text-gray-400 text-lg max-w-xl mx-auto mb-10">Wypełnij kalendarz, zredukuj no-show i daj pacjentom rezerwację 24/7. Bez dodatkowych etatów.</p>
+            <a href="index.html#contact" class="btn-primary inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105">
+                <span>Poproś o demo</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-8 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div class="flex items-center gap-3 justify-center md:justify-start"><img src="logo.png" alt="VoiceLink" class="h-8 w-auto"><span class="text-gray-500 text-xs">© 2026 VoiceLink. Wszystkie prawa zastrzeżone.</span></div>
+                <div class="flex items-center justify-center gap-6"><a href="polityka-prywatnosci.html" class="text-gray-400 hover:text-white text-xs font-medium transition-colors">Polityka prywatności</a><a href="regulamin.html" class="text-gray-400 hover:text-white text-xs font-medium transition-colors">Regulamin</a></div>
+                <div class="flex flex-col sm:flex-row items-center justify-center md:justify-end gap-4">
+                    <a href="tel:+48603076043" class="flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg><span class="text-xs">+48 603 076 043</span></a>
+                    <a href="mailto:karol.kulis@voicelink.pl" class="flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg><span class="text-xs">karol.kulis@voicelink.pl</span></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => { navbar.classList.toggle('nav-scrolled', window.scrollY > 50); });
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            document.getElementById('hamburger-icon').classList.toggle('hidden');
+            document.getElementById('close-icon').classList.toggle('hidden');
+            menu.classList.toggle('hidden');
+        }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    entry.target.querySelectorAll('.bar-fill').forEach((bar, i) => { setTimeout(() => bar.classList.add('animate'), i * 200); });
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
