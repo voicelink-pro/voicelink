@@ -630,6 +630,7 @@
         /* Smooth scroll */
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
         
         /* Scrollbar - cienki i minimalistyczny */
@@ -703,10 +704,10 @@
                     
                     <!-- Usługi - dropdown -->
                     <div class="nav-dropdown">
-                        <button class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium px-3 py-2 rounded-lg">
+                        <a href="uslugi.html" class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium px-3 py-2 rounded-lg" style="text-decoration:none;">
                             Usługi
                             <svg class="w-3.5 h-3.5 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
+                        </a>
                         <div class="nav-dropdown-menu">
                             <a href="sekretarka-ai.html">
                                 <span class="dropdown-icon">
@@ -749,10 +750,10 @@
 
                     <!-- Dla placówek medycznych - dropdown -->
                     <div class="nav-dropdown">
-                        <button class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium px-3 py-2 rounded-lg">
+                        <a href="dla-placowek.html" class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium px-3 py-2 rounded-lg" style="text-decoration:none;">
                             Dla placówek
                             <svg class="w-3.5 h-3.5 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
+                        </a>
                         <div class="nav-dropdown-menu">
                             <a href="przychodnie-kliniki.html">
                                 <span class="dropdown-icon">
@@ -804,10 +805,10 @@
 
                     <!-- Jak to działa - dropdown -->
                     <div class="nav-dropdown">
-                        <button class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium px-3 py-2 rounded-lg">
+                        <a href="jak-to-dziala-przeglad.html" class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium px-3 py-2 rounded-lg" style="text-decoration:none;">
                             Jak to działa
                             <svg class="w-3.5 h-3.5 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
+                        </a>
                         <div class="nav-dropdown-menu">
                             <a href="funkcje.html">
                                 <span class="dropdown-icon">
@@ -860,10 +861,10 @@
 
                     <!-- Cennik - dropdown -->
                     <div class="nav-dropdown">
-                        <button class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium px-3 py-2 rounded-lg">
+                        <a href="cennik-przeglad.html" class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium px-3 py-2 rounded-lg" style="text-decoration:none;">
                             Cennik
                             <svg class="w-3.5 h-3.5 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
+                        </a>
                         <div class="nav-dropdown-menu" style="min-width: 220px;">
                             <a href="kalkulator-oszczednosci.html">
                                 <span class="dropdown-icon">
@@ -888,10 +889,10 @@
 
                     <!-- O nas - dropdown -->
                     <div class="nav-dropdown">
-                        <button class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium px-3 py-2 rounded-lg">
+                        <a href="o-nas.html" class="nav-dropdown-trigger text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium px-3 py-2 rounded-lg" style="text-decoration:none;">
                             O nas
                             <svg class="w-3.5 h-3.5 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
+                        </a>
                         <div class="nav-dropdown-menu" style="min-width: 220px;">
                             <a href="o-nas.html">
                                 <span class="dropdown-icon">
@@ -949,10 +950,12 @@
                     
                     <!-- Usługi - mobile dropdown -->
                     <div>
-                        <button onclick="toggleMobileDropdown(this)" class="mobile-dropdown-trigger w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
-                            <span>Usługi</span>
-                            <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
+                        <div class="mobile-dropdown-trigger w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
+                                <a href="uslugi.html" onclick="closeMobileMenu()" class="flex-1" style="text-decoration:none;color:inherit;">Usługi</a>
+                                <button onclick="event.stopPropagation(); toggleMobileDropdown(this.parentElement)" class="p-2 -mr-2 rounded-lg hover:bg-white/10 transition-colors">
+                                    <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                            </div>
                         <div class="mobile-dropdown-content">
                             <div class="pl-6 pr-4 pb-2 space-y-1">
                                 <a href="sekretarka-ai.html" onclick="closeMobileMenu()" class="block px-4 py-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">Recepcjonistka AI</a>
@@ -965,10 +968,12 @@
 
                     <!-- Dla placówek - mobile dropdown -->
                     <div>
-                        <button onclick="toggleMobileDropdown(this)" class="mobile-dropdown-trigger w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
-                            <span>Dla placówek</span>
-                            <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
+                        <div class="mobile-dropdown-trigger w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
+                                <a href="dla-placowek.html" onclick="closeMobileMenu()" class="flex-1" style="text-decoration:none;color:inherit;">Dla placówek</a>
+                                <button onclick="event.stopPropagation(); toggleMobileDropdown(this.parentElement)" class="p-2 -mr-2 rounded-lg hover:bg-white/10 transition-colors">
+                                    <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                            </div>
                         <div class="mobile-dropdown-content">
                             <div class="pl-6 pr-4 pb-2 space-y-1">
                                 <a href="przychodnie-kliniki.html" onclick="closeMobileMenu()" class="block px-4 py-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">Przychodnie i kliniki</a>
@@ -982,10 +987,12 @@
 
                     <!-- Jak to działa - mobile dropdown -->
                     <div>
-                        <button onclick="toggleMobileDropdown(this)" class="mobile-dropdown-trigger w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
-                            <span>Jak to działa</span>
-                            <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
+                        <div class="mobile-dropdown-trigger w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
+                                <a href="jak-to-dziala-przeglad.html" onclick="closeMobileMenu()" class="flex-1" style="text-decoration:none;color:inherit;">Jak to działa</a>
+                                <button onclick="event.stopPropagation(); toggleMobileDropdown(this.parentElement)" class="p-2 -mr-2 rounded-lg hover:bg-white/10 transition-colors">
+                                    <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                            </div>
                         <div class="mobile-dropdown-content">
                             <div class="pl-6 pr-4 pb-2 space-y-1">
                                 <a href="funkcje.html" onclick="closeMobileMenu()" class="block px-4 py-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">Funkcje</a>
@@ -999,10 +1006,12 @@
 
                     <!-- Cennik - mobile dropdown -->
                     <div>
-                        <button onclick="toggleMobileDropdown(this)" class="mobile-dropdown-trigger w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
-                            <span>Cennik</span>
-                            <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
+                        <div class="mobile-dropdown-trigger w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
+                                <a href="cennik-przeglad.html" onclick="closeMobileMenu()" class="flex-1" style="text-decoration:none;color:inherit;">Cennik</a>
+                                <button onclick="event.stopPropagation(); toggleMobileDropdown(this.parentElement)" class="p-2 -mr-2 rounded-lg hover:bg-white/10 transition-colors">
+                                    <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                            </div>
                         <div class="mobile-dropdown-content">
                             <div class="pl-6 pr-4 pb-2 space-y-1">
                                 <a href="kalkulator-oszczednosci.html" onclick="closeMobileMenu()" class="block px-4 py-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">Kalkulator oszczędności</a>
@@ -1013,10 +1022,12 @@
 
                     <!-- O nas - mobile dropdown -->
                     <div>
-                        <button onclick="toggleMobileDropdown(this)" class="mobile-dropdown-trigger w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
-                            <span>O nas</span>
-                            <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
+                        <div class="mobile-dropdown-trigger w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
+                                <a href="o-nas.html" onclick="closeMobileMenu()" class="flex-1" style="text-decoration:none;color:inherit;">O nas</a>
+                                <button onclick="event.stopPropagation(); toggleMobileDropdown(this.parentElement)" class="p-2 -mr-2 rounded-lg hover:bg-white/10 transition-colors">
+                                    <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                            </div>
                         <div class="mobile-dropdown-content">
                             <div class="pl-6 pr-4 pb-2 space-y-1">
                                 <a href="o-nas.html" onclick="closeMobileMenu()" class="block px-4 py-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">Poznaj nasz zespół</a>
@@ -2467,7 +2478,7 @@
                 <!-- FAQ 1 -->
                 <div class="card-elegant rounded-2xl overflow-hidden">
                     <button class="w-full p-6 text-left flex items-center justify-between" onclick="toggleFaq(this)">
-                        <span class="text-lg font-semibold text-white">Czy klienci rozpoznają, że rozmawiają z AI?</span>
+                        <h4 class="text-lg font-semibold text-white m-0">Czy klienci rozpoznają, że rozmawiają z AI?</h4>
                         <svg class="w-6 h-6 text-purple-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
@@ -2482,7 +2493,7 @@
                 <!-- FAQ 2 -->
                 <div class="card-elegant rounded-2xl overflow-hidden">
                     <button class="w-full p-6 text-left flex items-center justify-between" onclick="toggleFaq(this)">
-                        <span class="text-lg font-semibold text-white">Co się dzieje, gdy AI nie zna odpowiedzi?</span>
+                        <h4 class="text-lg font-semibold text-white m-0">Co się dzieje, gdy AI nie zna odpowiedzi?</h4>
                         <svg class="w-6 h-6 text-purple-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
@@ -2497,7 +2508,7 @@
                 <!-- FAQ 3 -->
                 <div class="card-elegant rounded-2xl overflow-hidden">
                     <button class="w-full p-6 text-left flex items-center justify-between" onclick="toggleFaq(this)">
-                        <span class="text-lg font-semibold text-white">Czy mogę przetestować przed zakupem?</span>
+                        <h4 class="text-lg font-semibold text-white m-0">Czy mogę przetestować przed zakupem?</h4>
                         <svg class="w-6 h-6 text-purple-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
@@ -2512,7 +2523,7 @@
                 <!-- FAQ 4 -->
                 <div class="card-elegant rounded-2xl overflow-hidden">
                     <button class="w-full p-6 text-left flex items-center justify-between" onclick="toggleFaq(this)">
-                        <span class="text-lg font-semibold text-white">Ile kosztuje recepcjonistka AI?</span>
+                        <h4 class="text-lg font-semibold text-white m-0">Ile kosztuje recepcjonistka AI?</h4>
                         <svg class="w-6 h-6 text-purple-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
@@ -2527,7 +2538,7 @@
                 <!-- FAQ 5 -->
                 <div class="card-elegant rounded-2xl overflow-hidden">
                     <button class="w-full p-6 text-left flex items-center justify-between" onclick="toggleFaq(this)">
-                        <span class="text-lg font-semibold text-white">Czy mogę odsłuchać nagrania rozmów?</span>
+                        <h4 class="text-lg font-semibold text-white m-0">Czy mogę odsłuchać nagrania rozmów?</h4>
                         <svg class="w-6 h-6 text-purple-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
@@ -2542,7 +2553,7 @@
                 <!-- FAQ 6 -->
                 <div class="card-elegant rounded-2xl overflow-hidden">
                     <button class="w-full p-6 text-left flex items-center justify-between" onclick="toggleFaq(this)">
-                        <span class="text-lg font-semibold text-white">Jak szybko agent odbiera połączenia?</span>
+                        <h4 class="text-lg font-semibold text-white m-0">Jak szybko agent odbiera połączenia?</h4>
                         <svg class="w-6 h-6 text-purple-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
@@ -2557,7 +2568,7 @@
                 <!-- FAQ 7 -->
                 <div class="card-elegant rounded-2xl overflow-hidden">
                     <button class="w-full p-6 text-left flex items-center justify-between" onclick="toggleFaq(this)">
-                        <span class="text-lg font-semibold text-white">Czy mogę zintegrować z własnym CRM i kalendarzem?</span>
+                        <h4 class="text-lg font-semibold text-white m-0">Czy mogę zintegrować z własnym CRM i kalendarzem?</h4>
                         <svg class="w-6 h-6 text-purple-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
@@ -3630,37 +3641,262 @@
     <!-- ============================================= -->
     <!-- FOOTER -->
     <!-- ============================================= -->
-    <footer class="py-8 border-t border-white/10">
+    <!-- ============================================= -->
+    <!-- FOOTER SEO -->
+    <!-- ============================================= -->
+    <footer class="border-t border-white/10 pt-16 pb-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                <!-- Logo + prawa - LEWA -->
-                <div class="flex items-center gap-3 justify-center md:justify-start">
-                    <img src="logo.png" alt="VoiceLink" class="h-8 w-auto">
-                    <span class="text-gray-500 text-xs">© 2026 VoiceLink. Wszystkie prawa zastrzeżone.</span>
+
+            <!-- ===== SITEMAP LINKS GRID (TOP) ===== -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12 mb-14">
+
+                <!-- Usługi -->
+                <div>
+                    <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-5">Usługi</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="uslugi.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Przegląd usług</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="uslugi.html#filary-automatyzacji" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Filary automatyzacji</a></li>
+                                <li><a href="uslugi.html#dlaczego-warto" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Dlaczego warto</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="sekretarka-ai.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Recepcjonistka AI</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="sekretarka-ai.html#rodzaje-polaczen" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Rodzaje połączeń</a></li>
+                                <li><a href="sekretarka-ai.html#jakosc-rozmowy" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Jakość rozmowy</a></li>
+                                <li><a href="sekretarka-ai.html#kontrola" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Kontrola obsługi</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="automatyzacja-rozmow.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Automatyzacja rozmów</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="automatyzacja-rozmow.html#procesy" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Co zautomatyzować</a></li>
+                                <li><a href="automatyzacja-rozmow.html#rezultaty" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Rezultaty</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="rezerwacje-online.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Rezerwacje online</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="rezerwacje-online.html#co-obejmuje" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Zakres rezerwacji</a></li>
+                                <li><a href="rezerwacje-online.html#korzysci" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Korzyści</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="obsluga-klienta-24-7.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Obsługa klienta 24/7</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="obsluga-klienta-24-7.html#tematy-ai" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Tematy obsługi AI</a></li>
+                                <li><a href="obsluga-klienta-24-7.html#porownanie" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Porównanie</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-                
-                <!-- Links - ŚRODEK -->
-                <div class="flex items-center justify-center gap-6">
-                    <a href="polityka-prywatnosci.html" class="text-gray-400 hover:text-white text-xs font-medium transition-colors">Polityka prywatności</a>
-                    <a href="regulamin.html" class="text-gray-400 hover:text-white text-xs font-medium transition-colors">Regulamin</a>
+
+                <!-- Dla placówek -->
+                <div>
+                    <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-5">Dla placówek</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="dla-placowek.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Przegląd</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="dla-placowek.html#typy-placowek" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Typy placówek</a></li>
+                                <li><a href="dla-placowek.html#dopasowanie" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Dopasowanie</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="przychodnie-kliniki.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Przychodnie i kliniki</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="przychodnie-kliniki.html#rozwiazania" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Rozwiązania</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="gabinety-lekarskie.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Gabinety lekarskie</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="gabinety-lekarskie.html#jak-pomaga" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Jak pomaga</a></li>
+                                <li><a href="gabinety-lekarskie.html#korzysci" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Korzyści</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="gabinety-stomatologiczne.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Gabinety stomatologiczne</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="gabinety-stomatologiczne.html#dla-stomatologii" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Dla stomatologii</a></li>
+                                <li><a href="gabinety-stomatologiczne.html#straty" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Straty na pustych fotelach</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="centra-medyczne.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Centra medyczne</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="centra-medyczne.html#automatyzacja" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Automatyzacja systemowa</a></li>
+                                <li><a href="centra-medyczne.html#bezpieczenstwo" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Bezpieczeństwo danych</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="gabinety-specjalistyczne.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Gabinety specjalistyczne</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="gabinety-specjalistyczne.html#specjalnosci" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Wg specjalności</a></li>
+                                <li><a href="gabinety-specjalistyczne.html#przygotowanie-pacjenta" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Przygotowanie pacjenta</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-                
-                <!-- Contact - PRAWA -->
-                <div class="flex flex-col sm:flex-row items-center justify-center md:justify-end gap-4">
-                    <a href="tel:+48603076043" class="flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                        </svg>
-                        <span class="text-xs">+48 603 076 043</span>
-                    </a>
-                    <a href="mailto:karol.kulis@voicelink.pl" class="flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                        <span class="text-xs">karol.kulis@voicelink.pl</span>
-                    </a>
+
+                <!-- Jak to działa -->
+                <div>
+                    <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-5">Jak to działa</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="jak-to-dziala-przeglad.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Przegląd</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="jak-to-dziala-przeglad.html#wszystko-o-voicelink" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Wszystko o VoiceLink</a></li>
+                                <li><a href="jak-to-dziala-przeglad.html#bezpieczenstwo-rodo" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Bezpieczeństwo i RODO</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="funkcje.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Funkcje</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="funkcje.html#dostepnosc-247" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Dostępność 24/7</a></li>
+                                <li><a href="funkcje.html#rezerwacje-ai" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Rezerwacje AI</a></li>
+                                <li><a href="funkcje.html#naturalny-glos" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Naturalny głos</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="jak-to-dziala.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Proces krok po kroku</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="jak-to-dziala.html#krok-po-kroku" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Krok po kroku</a></li>
+                                <li><a href="jak-to-dziala.html#wdrozenie" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Wdrożenie</a></li>
+                                <li><a href="jak-to-dziala.html#efekt-wdrozenia" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Efekt wdrożenia</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="integracje.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Integracje</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="integracje.html#systemy" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Wspierane systemy</a></li>
+                                <li><a href="integracje.html#proces-integracji" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Proces integracji</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="technologia-ai.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Technologia AI</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="technologia-ai.html#jak-ai-dziala" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Jak działa AI</a></li>
+                                <li><a href="technologia-ai.html#naturalny-glos" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Naturalny głos</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Cennik + Firma -->
+                <div>
+                    <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-5">Cennik</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="cennik-przeglad.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Przegląd cennika</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="cennik-przeglad.html#narzedzia" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Narzędzia decyzyjne</a></li>
+                                <li><a href="cennik-przeglad.html#model-cenowy" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Model cenowy</a></li>
+                                <li><a href="cennik-przeglad.html#dlaczego-warto" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Dlaczego się opłaca</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="kalkulator-oszczednosci.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Kalkulator oszczędności</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="kalkulator-oszczednosci.html#dlaczego-warto" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Dlaczego warto</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="plany-cenowe.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Plany cenowe</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="plany-cenowe.html#porownanie" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Porównanie kosztów</a></li>
+                                <li><a href="plany-cenowe.html#faq-cennik" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› FAQ cennik</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-5 mt-8">Firma</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="o-nas.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">O nas</a>
+                            <ul class="mt-1 space-y-1 pl-3">
+                                <li><a href="o-nas.html#zespol" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Zespół</a></li>
+                                <li><a href="o-nas.html#nasza-misja" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Misja</a></li>
+                                <li><a href="o-nas.html#co-nas-wyroznia" class="text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">› Co nas wyróżnia</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#faq" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">FAQ</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Kontakt</a></li>
+                    </ul>
+                </div>
+
+                <!-- Prawne -->
+                <div>
+                    <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-5">Prawne</h3>
+                    <ul class="space-y-3">
+                        <li><a href="polityka-prywatnosci.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Polityka prywatności</a></li>
+                        <li><a href="regulamin.html" class="text-gray-300 hover:text-white text-sm transition-colors duration-200">Regulamin</a></li>
+                    </ul>
                 </div>
             </div>
+
+            <!-- Divider -->
+            <div class="h-px bg-white/10 mb-12"></div>
+
+            <!-- ===== BOTTOM: Logo + Description + Contact + Social ===== -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+
+                <!-- Logo + Description -->
+                <div>
+                    <a href="index.html" class="inline-block mb-4">
+                        <img src="logo.png" alt="VoiceLink" class="h-10 w-auto">
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Inteligentny asystent głosowy AI, który obsługuje połączenia telefoniczne, rezerwuje wizyty i wspiera placówki medyczne 24/7. Automatyzujemy komunikację, żebyś Ty mógł skupić się na pacjentach.
+                    </p>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Kontakt</h3>
+                    <div class="space-y-3">
+                        <a href="tel:+48603076043" class="flex items-center gap-3 text-gray-300 hover:text-cyan-400 transition-colors duration-200">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            <span class="text-sm">+48 603 076 043</span>
+                        </a>
+                        <a href="mailto:karol.kulis@voicelink.pl" class="flex items-center gap-3 text-gray-300 hover:text-cyan-400 transition-colors duration-200">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span class="text-sm">karol.kulis@voicelink.pl</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Social Media -->
+                <div>
+                    <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Social media</h3>
+                    <div class="flex items-center gap-3">
+                        <a href="https://www.instagram.com/voicelink.pl/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300" aria-label="Instagram">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=61584330524774" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300" aria-label="Facebook">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Divider -->
+            <div class="h-px bg-white/10 mb-8"></div>
+
+            <!-- Copyright Bar -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="VoiceLink" class="h-6 w-auto opacity-40">
+                    <span class="text-gray-500 text-xs">© 2026 VoiceLink. Wszystkie prawa zastrzeżone.</span>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="polityka-prywatnosci.html" class="text-gray-500 hover:text-white text-xs transition-colors duration-200">Polityka prywatności</a>
+                    <a href="regulamin.html" class="text-gray-500 hover:text-white text-xs transition-colors duration-200">Regulamin</a>
+                </div>
+            </div>
+
         </div>
     </footer>
 
